@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
         if (horizontalMovement != 0)
             movementController.Move(horizontalMovement);
 
+        // Jump if player tells it to
         if (Input.GetKeyDown(KeyCode.Space))
         {
             movementController.Jump();
