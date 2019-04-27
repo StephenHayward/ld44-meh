@@ -13,8 +13,13 @@ public class MovementController : MonoBehaviour
 
     Vector2 movement = Vector2.zero;
 
+    [SerializeField] CollisionChecker leftWallChecker;
+    [SerializeField] CollisionChecker rightWallChecker;
     [SerializeField] CollisionChecker groundChecker;
+
     bool isGrounded;
+    public bool IsWallLeft { get; private set; }
+    public bool IsWallRight { get; private set; }
 
     private void Awake()
     {
@@ -24,6 +29,8 @@ public class MovementController : MonoBehaviour
     private void Start()
     {
         groundChecker.onCollidingUpdated.AddListener(UpdateGrounded);
+        leftWallChecker.onCollidingUpdated.AddListener((isWall) => IsWallLeft = isWall);
+        rightWallChecker.onCollidingUpdated.AddListener((isWall) => IsWallRight = isWall);
     }
 
     void UpdateGrounded(bool isGrounded)
@@ -57,5 +64,12 @@ public class MovementController : MonoBehaviour
             velocity.x *= decelerationRate * Time.deltaTime;
             rb.velocity = velocity;
         }
+    }
+
+    public void StopMoving()
+    {
+        Vector2 velocity = rb.velocity;
+        velocity.x = 0;
+        rb.velocity = velocity;
     }
 }
